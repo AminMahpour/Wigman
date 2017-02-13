@@ -69,64 +69,70 @@ def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
 
     return out_data
 
+graph=1
+
 config_file = sys.argv[1]
 beds, bws, pdf_file = parseconfig(config_file)
+print(beds)
 
-current_bed = bedreader(beds[0][0])
-sorted_bed = []
 print("calculating...")
-fig = pp.figure(figsize=(2 * len(bws), 8), dpi=600)
-for i, bw in enumerate(bws):
+fig = pp.figure(figsize=(2 * len(bws), 2*len(beds)), dpi=600)
+for j, bed in enumerate(beds):
+    current_bed = bedreader(bed[0])
+    sorted_bed = []
+    for i, bw in enumerate(bws):
 
-    bw_file = bw[0]
-    bw_min = int(bw[1])
-    bw_max = int(bw[2])
-    bw_step = int(bw[3])
-    bw_gradient = str(bw[4])
-    bw_title = str(bw[5])
-    bw_desc = str(bw[6])
+        bw_file = bw[0]
+        bw_min = int(bw[1])
+        bw_max = int(bw[2])
+        bw_step = int(bw[3])
+        bw_gradient = str(bw[4])
+        bw_title = str(bw[5])
+        bw_desc = str(bw[6])
 
-    if i == 0:
-        raw_data = get_value_from_pos(bw_file, current_bed)
-        sorted_bed = [x[0] for x in raw_data]
-        current_bed = sorted_bed
-    else:
-        raw_data = get_value_from_pos(bw_file, current_bed, sort=False)
+        if i == 0:
+            raw_data = get_value_from_pos(bw_file, current_bed)
+            sorted_bed = [x[0] for x in raw_data]
+            current_bed = sorted_bed
+        else:
+            raw_data = get_value_from_pos(bw_file, current_bed, sort=False)
 
-    array = np.array([x[2] for x in raw_data])
-    masked_array = np.ma.masked_invalid(array)
-    y = int(len(raw_data)/40) + 2
-    blrd_color = pp.cm.bwr
-    hot_color = pp.cm.hot
+        array = np.array([x[2] for x in raw_data])
+        masked_array = np.ma.masked_invalid(array)
+        y = int(len(raw_data)/40) + 2
+        blrd_color = pp.cm.bwr
+        hot_color = pp.cm.hot
 
-    current_color = None
-    if bw_gradient == "BuRd":current_color = pp.cm.bwr
-    if bw_gradient == "Hot":current_color = pp.cm.hot
-    if bw_gradient == "Reds": current_color = "Reds"
-    if bw_gradient == "Blues": current_color = "Blues_r"
+        current_color = None
+        if bw_gradient == "BuRd":current_color = pp.cm.bwr
+        if bw_gradient == "Hot":current_color = pp.cm.hot
+        if bw_gradient == "Reds": current_color = "Reds"
+        if bw_gradient == "Blues": current_color = "Blues_r"
 
-    print("plotting {0}...".format(bw_file))
-    pp.subplot(1, len(bws), i+1)
-    pp.title(bw_title)
+        print("plotting {0}...".format(bw_file))
 
-    pp.pcolormesh(masked_array, cmap=current_color)
-    pp.clim(bw_min, bw_max)
-    cbar = pp.colorbar(orientation="horizontal", ticks=list(range(bw_min, bw_max, bw_step)), pad=0.07)
-    cbar.set_label(bw_desc, size=10)
-    cbar.ax.tick_params(labelsize=8)
-    frame1 = pp.gca()
-    if i == 0:
-        pp.ylabel("n={0}".format(len(raw_data)), fontsize=16, color="black")
+        pp.subplot(len(beds), len(bws), graph)
 
-    for xlabel_i in frame1.axes.get_xticklabels():
-        xlabel_i.set_visible(False)
-        xlabel_i.set_fontsize(0.0)
-    for xlabel_i in frame1.axes.get_yticklabels():
-        xlabel_i.set_fontsize(0.0)
-        xlabel_i.set_visible(False)
-    for tick in frame1.axes.get_xticklines():
-        tick.set_visible(False)
-    for tick in frame1.axes.get_yticklines():
-        tick.set_visible(False)
+        pp.title(bw_title)
 
+        pp.pcolormesh(masked_array, cmap=current_color)
+        pp.clim(bw_min, bw_max)
+        cbar = pp.colorbar(orientation="horizontal", ticks=list(range(bw_min, bw_max, bw_step)), pad=0.07)
+        cbar.set_label(bw_desc, size=10)
+        cbar.ax.tick_params(labelsize=8)
+        frame1 = pp.gca()
+        if i == 0:
+            pp.ylabel("n={0}".format(len(raw_data)), fontsize=16, color="black")
+
+        for xlabel_i in frame1.axes.get_xticklabels():
+            xlabel_i.set_visible(False)
+            xlabel_i.set_fontsize(0.0)
+        for xlabel_i in frame1.axes.get_yticklabels():
+            xlabel_i.set_fontsize(0.0)
+            xlabel_i.set_visible(False)
+        for tick in frame1.axes.get_xticklines():
+            tick.set_visible(False)
+        for tick in frame1.axes.get_yticklines():
+            tick.set_visible(False)
+        graph += 1
 pp.savefig(pdf_file)

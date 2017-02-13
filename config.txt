@@ -1,4 +1,5 @@
 bed	hg19/test.bed	50	50
+bed	hg19/test2.bed	50	50
 bw	hg19.100way.phyloP100way.bw	-4	5	2	BuRd	PhyloP	Conservation
 bw	ENCFF000SLA.bigWig	0	210	100	Hot	DNase	Signal
 bw	ENCFF000SPQ.bigWig	0	210	100	Hot	DNase	Signal
