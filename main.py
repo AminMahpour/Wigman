@@ -47,7 +47,7 @@ def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
     bw = BigwigObj(bwurl)
     out_data = []
     data_output = []
-
+    masked_data = []
     for coord in bed:
         scores = None
         try:
@@ -60,10 +60,12 @@ def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
                 data_output.append([coord, np.mean(scores[min:max]), scores])
     if sort:
 
-        for i in data_output:
-            if np.isnan(np.mean(i[2])): data_output.remove(i)
 
-        out_data = sorted(data_output, key=operator.itemgetter(1))
+        for i in data_output:
+            if not np.isnan(np.mean(i[2])):
+                masked_data.append(i)
+
+        out_data = sorted(masked_data, key=operator.itemgetter(1))
     else:
         out_data = data_output
 
