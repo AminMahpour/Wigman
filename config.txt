@@ -1,0 +1,7 @@
+bed	hg19/test.bed	50	50
+bw	hg19.100way.phyloP100way.bw	-4	5	2	BuRd	PhyloP	Conservation
+bw	ENCFF000SLA.bigWig	0	210	100	Hot	DNase	Signal
+bw	ENCFF000SPQ.bigWig	0	210	100	Hot	DNase	Signal
+bw	GSM1480321_K562_GROcap_wTAP_plus.bigWig	0	11	5	Reds	Plus	Read
+bw	GSM1480321_K562_GROcap_wTAP_minus.bigWig	-10	1	5	Blues	Minus	Read
+pdf	new.pdf	size
