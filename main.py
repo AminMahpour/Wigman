@@ -76,7 +76,7 @@ beds, bws, pdf_file = parseconfig(config_file)
 print(beds)
 
 print("calculating...")
-fig = pp.figure(figsize=(2 * len(bws), 2*len(beds)), dpi=600)
+fig = pp.figure(figsize=(2 * len(bws), 4*len(beds)+2), dpi=600)
 for j, bed in enumerate(beds):
     current_bed = bedreader(bed[0])
     sorted_bed = []
