@@ -80,7 +80,7 @@ print(beds)
 print("calculating...")
 fig = pp.figure(figsize=(2 * len(bws), 4*len(beds)+2), dpi=90)
 for j, bed in enumerate(beds):
-    current_bed = bedreader(bed[0])
+    current_bed = bedreader(bed[0],min=bed[1],max=bed[2])
     bed_title = bed[3]
     sorted_bed = []
     for i, bw in enumerate(bws):
@@ -94,7 +94,7 @@ for j, bed in enumerate(beds):
         bw_desc = str(bw[6])
 
         if i == 0:
-            raw_data = get_value_from_pos(bw_file, current_bed)
+            raw_data = get_value_from_pos(bw_file, current_bed,min=bed[1], max=bed[2]+10)
             sorted_bed = [x[0] for x in raw_data]
             current_bed = sorted_bed
         else:
