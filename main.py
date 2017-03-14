@@ -16,9 +16,9 @@ def parseconfig(conf_file):
         line=line.strip("\n").split("\t")
 
         if line[0] == "bed":
-            bed_line.append([line[1], int( line[2]), int( line[3])])
+            bed_line.append([line[1], int( line[2]), int( line[3]), line[4]])
         elif line[0] =="bw":
-            bw_line.append([line[1], int(line[2]), int(line[3]), int(line[4]), line[5], line[6], line[7]])
+            bw_line.append([line[1], float(line[2]), float(line[3]), float(line[4]), line[5], line[6], line[7]])
         elif line[0] == "pdf":
             pdf_file = line[1]
 
@@ -78,16 +78,17 @@ beds, bws, pdf_file = parseconfig(config_file)
 print(beds)
 
 print("calculating...")
-fig = pp.figure(figsize=(2 * len(bws), 4*len(beds)+2), dpi=600)
+fig = pp.figure(figsize=(2 * len(bws), 4*len(beds)+2), dpi=90)
 for j, bed in enumerate(beds):
     current_bed = bedreader(bed[0])
+    bed_title = bed[3]
     sorted_bed = []
     for i, bw in enumerate(bws):
 
         bw_file = bw[0]
-        bw_min = int(bw[1])
-        bw_max = int(bw[2])
-        bw_step = int(bw[3])
+        bw_min = float(bw[1])
+        bw_max = float(bw[2])
+        bw_step = float(bw[3])
         bw_gradient = str(bw[4])
         bw_title = str(bw[5])
         bw_desc = str(bw[6])
@@ -107,7 +108,7 @@ for j, bed in enumerate(beds):
 
         current_color = None
         if bw_gradient == "BuRd":current_color = pp.cm.bwr
-        if bw_gradient == "Hot":current_color = pp.cm.hot
+        if bw_gradient == "Hot": current_color = pp.cm.hot
         if bw_gradient == "Reds": current_color = "Reds"
         if bw_gradient == "Blues": current_color = "Blues_r"
 
@@ -119,12 +120,12 @@ for j, bed in enumerate(beds):
 
         pp.pcolormesh(masked_array, cmap=current_color)
         pp.clim(bw_min, bw_max)
-        cbar = pp.colorbar(orientation="horizontal", ticks=list(range(bw_min, bw_max, bw_step)), pad=0.07)
+        cbar = pp.colorbar(orientation="horizontal", ticks=list(np.arange(bw_min,bw_max,step=bw_step)), pad=0.07)
         cbar.set_label(bw_desc, size=10)
         cbar.ax.tick_params(labelsize=8)
         frame1 = pp.gca()
         if i == 0:
-            pp.ylabel("n={0}".format(len(raw_data)), fontsize=16, color="black")
+            pp.ylabel("{0}\nn={1}".format(bed_title,len(raw_data)), fontsize=16, color="black")
 
         for xlabel_i in frame1.axes.get_xticklabels():
             xlabel_i.set_visible(False)
