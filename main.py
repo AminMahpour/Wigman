@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
 import operator
-import pyBigWig
 import sys
+
 import matplotlib.pyplot as pp
 import numpy as np
+import pyBigWig
+import tqdm
+
 
 def parseconfig(conf_file):
     config = open(conf_file, mode="r")
@@ -71,14 +74,20 @@ def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
 
     return out_data
 
-graph=1
 
+graph = 1
 config_file = sys.argv[1]
 beds, bws, pdf_file = parseconfig(config_file)
 print(beds)
 
 print("calculating...")
 fig = pp.figure(figsize=(2 * len(bws), 4*len(beds)+2), dpi=90)
+
+bar = tqdm(total=100)
+
+
+
+
 for j, bed in enumerate(beds):
     current_bed = bedreader(bed[0],min=bed[1],max=bed[2])
     bed_title = bed[3]
@@ -138,4 +147,8 @@ for j, bed in enumerate(beds):
         for tick in frame1.axes.get_yticklines():
             tick.set_visible(False)
         graph += 1
+
+        bar.update((i + j) / (len(bw) + len(bed)) * 100)
+
+bar.close()
 pp.savefig(pdf_file)
