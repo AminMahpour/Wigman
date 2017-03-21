@@ -9,6 +9,7 @@ import pyBigWig
 import tqdm
 
 
+# added
 def parseconfig(conf_file):
     config = open(conf_file, mode="r")
     bed_line = []
