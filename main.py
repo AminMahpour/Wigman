@@ -6,7 +6,7 @@ import sys
 
 import matplotlib.pyplot as pp
 import numpy as np
-import tqdm
+from tqdm import tqdm
 
 
 # added
@@ -26,7 +26,7 @@ def parseconfig(conf_file):
         elif line[0] == "pdf":
             pdf_file = line[1]
 
-    print(bed_line,bw_line,pdf_file)
+    # print(bed_line,bw_line,pdf_file)
     return bed_line, bw_line, pdf_file
 
 
@@ -57,7 +57,9 @@ def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
         try:
             scores = bw.get_scores(coord)
         except Exception as e:
-            print("Error occurred: {0}".format(e))
+            # print("Error occurred: {0}".format(e))
+            pass
+
         if scores != None:
             if len(scores) != 0:
 
@@ -84,12 +86,12 @@ if __name__ == '__main__':
     if config_file == "test": exit()
 
     beds, bws, pdf_file = parseconfig(config_file)
-    print(beds)
+    # print(beds)
 
-    print("calculating...")
+    # print("calculating...")
     fig = pp.figure(figsize=(2 * len(bws), 4 * len(beds) + 2), dpi=90)
 
-    bar = tqdm(total=100)
+    bar = tqdm(total=100, desc="Complete", unit="Iteration")
 
     for j, bed in enumerate(beds):
         current_bed = bedreader(bed[0], min=bed[1], max=bed[2])
@@ -124,7 +126,7 @@ if __name__ == '__main__':
             if bw_gradient == "Reds": current_color = "Reds"
             if bw_gradient == "Blues": current_color = "Blues_r"
 
-            print("plotting {0}...".format(bw_file))
+            # print("plotting {0}...".format(bw_file))
 
             pp.subplot(len(beds), len(bws), graph)
 
@@ -149,9 +151,13 @@ if __name__ == '__main__':
                 tick.set_visible(False)
             for tick in frame1.axes.get_yticklines():
                 tick.set_visible(False)
+            #print(int( graph/ (len(beds) * len(bws)) *100))
+
+            total = len(beds) * len(bws)
+            chunk = 1/total
+
+            bar.update ( chunk *100 )
+
             graph += 1
-
-            bar.update((i + j) / (len(bw) + len(bed)) * 100)
-
     bar.close()
     pp.savefig(pdf_file)
