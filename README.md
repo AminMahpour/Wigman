@@ -1,7 +1,7 @@
 Wigman
 ======
 
-[![Build Status](https://travis-ci.org/AminMahpour/Wigman.svg?branch=beta)](https://travis-ci.org/AminMahpour/Wigman)
+[![Build Status](https://travis-ci.org/AminMahpour/Wigman.svg?branch=master)](https://travis-ci.org/AminMahpour/Wigman)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f6a4d63a2ad542668a70fbab55b320b2)](https://www.codacy.com/app/AminMahpour/Wigman?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AminMahpour/Wigman&amp;utm_campaign=Badge_Grade)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](LICENSE)
 
