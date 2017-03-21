@@ -38,16 +38,16 @@ class BigwigObj:
     def get_scores(self, pos):
         return self.bw.values(*pos)
 
-def bedreader(file, min=50, max=50):
+def bedreader(file, minbp=50, maxbp=50):
     data = open(file, mode="r")
     for line in data:
         line = line.split("\t")
-        line[1] = int(line[1]) - min
-        line[2] = int(line[2]) + max
+        line[1] = int(line[1]) - minbp
+        line[2] = int(line[2]) + maxbp
         out = (line[0], line[1], line[2])
         yield out
 
-def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
+def get_value_from_pos(bwurl, bed, minbp=50, maxbp=60, sort=True):
     bw = BigwigObj(bwurl)
     out_data = []
     data_output = []
@@ -57,13 +57,12 @@ def get_value_from_pos(bwurl, bed, min=50, max=60, sort=True):
         try:
             scores = bw.get_scores(coord)
         except Exception as e:
-            # print("Error occurred: {0}".format(e))
-            pass
+            print("Error occurred: {0}".format(e))
 
         if scores != None:
             if len(scores) != 0:
 
-                data_output.append([coord, np.mean(scores[min:max]), scores])
+                data_output.append([coord, np.mean(scores[minbp:maxbp]), scores])
     if sort:
 
 
@@ -94,7 +93,7 @@ if __name__ == '__main__':
     bar = tqdm(total=100, desc="Complete", unit="Iteration")
 
     for j, bed in enumerate(beds):
-        current_bed = bedreader(bed[0], min=bed[1], max=bed[2])
+        current_bed = bedreader(bed[0], minbp=bed[1], maxbp=bed[2])
         bed_title = bed[3]
         sorted_bed = []
         for i, bw in enumerate(bws):
@@ -108,7 +107,7 @@ if __name__ == '__main__':
             bw_desc = str(bw[6])
 
             if i == 0:
-                raw_data = get_value_from_pos(bw_file, current_bed, min=bed[1], max=bed[2] + 10)
+                raw_data = get_value_from_pos(bw_file, current_bed, minbp=bed[1], maxbp=bed[2] + 10)
                 sorted_bed = [x[0] for x in raw_data]
                 current_bed = sorted_bed
             else:
