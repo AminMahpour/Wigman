@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import operator
+import pyBigWig
 import sys
 
 import matplotlib.pyplot as pp
 import numpy as np
-import pyBigWig
 import tqdm
 
 
@@ -80,6 +80,9 @@ if __name__ == '__main__':
 
     graph = 1
     config_file = sys.argv[1]
+
+    if config_file == "test": continue
+
     beds, bws, pdf_file = parseconfig(config_file)
     print(beds)
 
