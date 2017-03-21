@@ -81,7 +81,7 @@ if __name__ == '__main__':
     graph = 1
     config_file = sys.argv[1]
 
-    if config_file == "test": continue
+    if config_file == "test": exit()
 
     beds, bws, pdf_file = parseconfig(config_file)
     print(beds)
