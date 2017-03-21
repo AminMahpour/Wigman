@@ -1,0 +1,5 @@
+operator
+matplotlib
+numpy
+pyBigWig
+tqdm
