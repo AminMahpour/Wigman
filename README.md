@@ -13,7 +13,7 @@ Generate heatmap files from BigWig data.
 In order to run the plotting script, you need a config "instruction" file. The file
  should look like the following template:
 ```
-Bed/Wig/pdf filename    min max step    title   description
+Bed/Wig/pdf filename    min max step    colormap    title   description
 ```
 
 My config.txt contains the following:
