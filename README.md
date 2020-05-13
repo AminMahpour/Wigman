@@ -42,3 +42,9 @@ main.py config.txt
 ![Sample Image](Docs/Images/tata_profile.png "Wigman sample output")
 
 
+Citations
+---------
+
+If this software was helpful please consider citing it with:
+
+Mahpour A, Scruggs BS, Smiraglia D, Ouchi T, Gelman IH (2018) A methyl-sensitive element induces bidirectional transcription in TATA-less CpG island-associated promoters. PLOS ONE 13(10): e0205608. https://doi.org/10.1371/journal.pone.0205608 
